@@ -1,7 +1,8 @@
-<!DOCTYPE html><html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Calculadora Entre Ticas</title>
   <style>
     body {
@@ -10,6 +11,7 @@
       color: #4b2e2e;
       text-align: center;
       padding: 30px;
+      margin: 0;
     }
     h1 {
       color: #d17fa6;
@@ -17,14 +19,46 @@
       margin-bottom: 20px;
       text-shadow: 0 0 5px gold;
     }
-    .calculator {
+    .tab-container {
+      max-width: 420px;
+      margin: 0 auto;
+    }
+    .tabs {
+      display: flex;
+      margin-bottom: 0;
+      border-bottom: 2px solid #f8c6d8;
+    }
+    .tab {
+      flex: 1;
+      padding: 12px 0;
       background-color: #fff0f5;
+      border: 2px solid #f8c6d8;
+      border-bottom: none;
+      border-radius: 10px 10px 0 0;
+      margin-right: 2px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #a0527d;
+      transition: background 0.3s ease;
+    }
+    .tab:last-child {
+      margin-right: 0;
+    }
+    .tab.active {
+      background-color: #ffffff;
+      color: #4b2e2e;
+    }
+    .calculator {
+      background-color: #ffffff;
       border: 2px solid #f8c6d8;
       border-radius: 20px;
       box-shadow: 0 0 15px #f0c0d0;
       padding: 20px;
       max-width: 400px;
       margin: auto;
+    }
+    .calculator.active {
+      display: block;
     }
     input[type="number"] {
       padding: 10px;
@@ -46,72 +80,37 @@
       margin-top: 15px;
     }
     .glitter {
-      color: #2e7d6f; ;
+      color: #2e7d6f;
       font-weight: bold;
       text-shadow: 0 0 8px #a7e6d7;
+    }
+    img {
+      border-radius: 15px;
+      margin: 2px 0;
     }
   </style>
 </head>
 <body>
   <h1>Calculadora Entre Ticas ✨</h1>
-  <div class="calculator">
-    <img src="EntreTicas.jpg" style="border-radius: 15px;"  class="imagen-redondeada" alt="Girl in a jacket" width="200" height="200">
-    </br> </br>
-    
-    <label for="exchange">Tipo de cambio (₡ por $):</label>      
-    <label id="exchange">¢:</label>
-      
-    </br>
-    <label for="price">Precio de etiqueta (USD):</label>
-    <input type="number" id="price" placeholder="Ej: 50" step="0.01" min="0">     
 
-    <div class="result" id="results" style="display: none;">
-      <p>🧾 <strong>Impuesto 7%:</strong> $<span id="tax"></span></p>
-      <p>💼 <strong>Comisión 8%:</strong> $<span id="fee"></span></p>
-      <p class="glitter">💰 <strong>Total en dólares:</strong> $<span id="totalUsd"></span></p>
-      <p class="glitter">💵 <strong>Total en colones:</strong> ₡<span id="totalCrc"></span></p>
+
+    <!-- Calculadora 1 -->
+    <div class="calculator active" id="calc1" style="width:'800'" >
+   
     </div>
 
-    <p style="margin-top: 20px; font-style: italic; color: #a0527d; background-color: #fff0f5; border: 1px dashed #f8c6d8; padding: 10px; border-radius: 10px;">
-      <strong>Nota:</strong> El costo de envío <B>NO</B> está incluido y se cobrará por separado al 
-    llegar el o los paquete(s) a Costa Rica, ya que se calcula según su peso.
-    </p>
 
-  </div>
   <script>
-    const priceInput = document.getElementById('price');
-    const exchangeInput = document.getElementById('exchange')
-	        
-    const tc = 512;
-    document.getElementById('exchange').textContent = "¢"+tc;
+     const url = `https://raw.githubusercontent.com/Entre-Ticas/Shared/main/script.txt?nocache=${new Date().getTime()}`;
+          fetch(url)
+          .then(response => response.text())
+          .then(scriptText => {
+            const script = document.createElement("script");
+            script.textContent = scriptText;
+            document.body.appendChild(script);
+            init();
+          });
 
-    function calculate() {
-
-      const price = parseFloat(priceInput.value);
-      if (isNaN(price))
-      {
-      document.getElementById('results').style.display = 'none';
-      return;
-      } 
-      
-      const exchangeRate = parseFloat(exchangeInput.textContent.replace(/¢/g, ""));
-      if (isNaN(price) || isNaN(exchangeRate)) return;
-
-      const tax = price * 0.07;
-      const subtotal = price + tax;
-      const fee = subtotal * 0.08;
-      const totalUsd = subtotal + fee;
-      const totalCrc = totalUsd * exchangeRate;
-
-      document.getElementById('tax').textContent = tax.toFixed(2);
-      document.getElementById('fee').textContent = fee.toFixed(2);
-      document.getElementById('totalUsd').textContent = totalUsd.toFixed(2);
-      document.getElementById('totalCrc').textContent = Math.round(totalCrc).toLocaleString('es-CR');
-      document.getElementById('results').style.display = 'block';
-    }
-
-    priceInput.addEventListener('input', calculate);
-    exchangeInput.addEventListener('input', calculate);
-    
-  </script></body>
+  </script>
+</body>
 </html>
